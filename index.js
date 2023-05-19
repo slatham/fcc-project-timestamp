@@ -25,26 +25,18 @@ app.get('/api', (req, res) => {
 
 app.get('/api/:time', (req, res) => {
   const dateString = req.params.time;
-  // regex for date in UTC format
-  const regexDate = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/;
-  const regexTime = /^[0-9]*$/;
+  const regexEpochTime = /^[0-9]*$/;
 
-  // check what the format of the param for time is
-  if (dateString.match(regexDate)) {
-    // been supplied yyyy-mm-dd
-
-    // get the unix time from the date param
-    const unixDate = Date.parse(dateString);
-
-    // get the UTC date from unixDate
-    const utcDate = new Date(unixDate);
-
-    res.status(200).json({ unix: unixDate, utc: utcDate.toGMTString() });
-  } else if (dateString.match(regexTime)) {
-    const utcDate = new Date(parseInt(dateString));
-    res
-      .status(200)
-      .json({ unix: parseInt(dateString), utc: utcDate.toGMTString() });
+  if (dateString.match(regexEpochTime)) {
+    const unixTime = Date.parse(dateString);
+    const utcTime = new Date(parseInt(dateString)).toGMTString();
+    res.status(200).json({ unix: unixTime, utc: utcTime });
+  } else if (Date.parse(dateString)) {
+    // valid date has been supplied
+    const date = new Date(dateString);
+    const unixTime = Date.parse(dateString);
+    const utcTime = date.toGMTString();
+    res.status(200).json({ unix: unixTime, utc: utcTime });
   } else {
     res.status(500).json({ error: 'Invalid Date' });
   }
