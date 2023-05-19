@@ -19,6 +19,10 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/api', (req, res) => {
+  res.status(200).json({ unix: Date.now(), utc: new Date().toGMTString() });
+});
+
 app.get('/api/:time', (req, res) => {
   const dateString = req.params.time;
   // regex for date in UTC format
@@ -42,7 +46,7 @@ app.get('/api/:time', (req, res) => {
       .status(200)
       .json({ unix: parseInt(dateString), utc: utcDate.toGMTString() });
   } else {
-    res.status(500).json({ message: 'Time format wrong' });
+    res.status(500).json({ error: 'Invalid Date' });
   }
 });
 
