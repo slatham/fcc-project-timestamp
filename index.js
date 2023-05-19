@@ -28,7 +28,7 @@ app.get('/api/:time', (req, res) => {
   const regexEpochTime = /^[0-9]*$/;
 
   if (dateString.match(regexEpochTime)) {
-    const unixTime = Date.parse(dateString);
+    const unixTime = parseInt(dateString);
     const utcTime = new Date(parseInt(dateString)).toGMTString();
     res.status(200).json({ unix: unixTime, utc: utcTime });
   } else if (Date.parse(dateString)) {
