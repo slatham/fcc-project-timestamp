@@ -35,12 +35,12 @@ app.get('/api/:time', (req, res) => {
     // get the UTC date from unixDate
     const utcDate = new Date(unixDate);
 
-    res.status(200).json({ unix: unixDate, UTC: utcDate.toGMTString() });
+    res.status(200).json({ unix: unixDate, utc: utcDate.toGMTString() });
   } else if (dateString.match(regexTime)) {
     const utcDate = new Date(parseInt(dateString));
     res
       .status(200)
-      .json({ unix: parseInt(dateString), UTC: utcDate.toGMTString() });
+      .json({ unix: parseInt(dateString), utc: utcDate.toGMTString() });
   } else {
     res.status(500).json({ message: 'Time format wrong' });
   }
